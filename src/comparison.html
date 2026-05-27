@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Comparison - JwtAuth vs ClaimsAuth</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header.jwt {
+            color: #667eea;
+        }
+
+        .card-header.claims {
+            color: #764ba2;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .badge-jwt {
+            background-color: #e3f2fd;
+            color: #667eea;
+        }
+
+        .badge-claims {
+            background-color: #f3e5f5;
+            color: #764ba2;
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            padding: 15px;
+            margin-bottom: 12px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .card-header.claims ~ .features-list li {
+            border-left-color: #764ba2;
+        }
+
+        .features-list li:hover {
+            background-color: #e8edf7;
+            transform: translateX(5px);
+        }
+
+        .card-header.claims ~ .features-list li:hover {
+            background-color: #f0e8f7;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 12px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .card-header.claims ~ .features-list li:before {
+            background-color: #764ba2;
+        }
+
+        .features-list li strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .features-list li span {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .comparison-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .comparison-section h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .explanation {
+            background-color: #f8f9fa;
+            border-left: 4px solid #764ba2;
+            padding: 20px;
+            border-radius: 4px;
+            line-height: 1.8;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .explanation strong {
+            color: #333;
+        }
+
+        .note-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #856404;
+        }
+
+        .note-box:before {
+            content: "⚠️ ";
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .card-header {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Authentication Comparison</h1>
+
+        <div class="comparison-grid">
+            <!-- JwtAuth Card -->
+            <div class="card">
+                <div class="card-header jwt">
+                    JwtAuth
+                    <span class="badge badge-jwt">Strict Validation</span>
+                </div>
+                <ul class="features-list">
+                    <li>
+                        <strong>JWT Bearer Middleware</strong>
+                        <span>Validates token automatically on every request</span>
+                    </li>
+                    <li>
+                        <strong>[Authorize] Attribute</strong>
+                        <span>Declarative protection at the controller/action level</span>
+                    </li>
+                    <li>
+                        <strong>Signature Validation</strong>
+                        <span>Framework verifies token hasn't been tampered with</span>
+                    </li>
+                    <li>
+                        <strong>Expiration Check</strong>
+                        <span>Automatically rejects expired tokens</span>
+                    </li>
+                    <li>
+                        <strong>Issuer Validation</strong>
+                        <span>Verifies token was issued by trusted source</span>
+                    </li>
+                    <li>
+                        <strong>Audience Validation</strong>
+                        <span>Ensures token is intended for this API</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- ClaimsAuth Card -->
+            <div class="card">
+                <div class="card-header claims">
+                    ClaimsAuth
+                    <span class="badge badge-claims">Manual Validation</span>
+                </div>
+                <ul class="features-list">
+                    <li>
+                        <strong>Manual Header Extraction</strong>
+                        <span>Manually extracts JWT from Authorization header</span>
+                    </li>
+                    <li>
+                        <strong>No Middleware Protection</strong>
+                        <span>Validation happens inside controller logic</span>
+                    </li>
+                    <li>
+                        <strong>Token Decoding</strong>
+                        <span>Decodes token without validating signature (for demo)</span>
+                    </li>
+                    <li>
+                        <strong>Username Claim Extraction</strong>
+                        <span>Manually checks for username claim in token</span>
+                    </li>
+                    <li>
+                        <strong>Manual Expiration Check</strong>
+                        <span>Manually verifies token hasn't expired</span>
+                    </li>
+                    <li>
+                        <strong>Custom Business Logic</strong>
+                        <span>Full control over validation rules per endpoint</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="comparison-section">
+            <h2>Why [Authorize] Wouldn't Work in ClaimsAuth</h2>
+            <div class="explanation">
+                <p>
+                    <strong>In ClaimsAuth, the [Authorize] attribute would serve no practical purpose</strong> 
+                    because it requires ASP.NET Core's authentication middleware to be configured. 
+                </p>
+                <p style="margin-top: 15px;">
+                    The <strong>[Authorize]</strong> attribute is part of the authorization pipeline that:
+                </p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>✓ Intercepts requests before they reach your controller</li>
+                    <li>✓ Checks if a user is authenticated (User.Identity.IsAuthenticated)</li>
+                    <li>✓ Checks if the user has required roles/policies</li>
+                    <li>✓ Returns 401 Unauthorized if validation fails</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    Since <strong>ClaimsAuth doesn't configure JWT Bearer middleware</strong>, 
+                    ASP.NET Core has no way to populate the User object with claims. Therefore, 
+                    the [Authorize] attribute would be ignored, and every request would pass through 
+                    (your manual validation in the controller is what actually enforces security).
+                </p>
+            </div>
+            <div class="note-box">
+                This demonstrates two real-world patterns: JwtAuth shows best practices with 
+                framework-level security, while ClaimsAuth shows how to manually handle claims 
+                for cases requiring custom validation logic.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

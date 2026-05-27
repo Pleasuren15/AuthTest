@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using JwtAuth;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JwtAuth.Controllers;
 
@@ -9,6 +9,7 @@ public class AgifyController : ControllerBase
 {
     private static readonly HttpClient Client = new();
 
+    [Authorize]
     [HttpGet("age/{name}")]
     public async Task<ActionResult<AgifyAgeDto>> GetAge(string name)
     {
@@ -16,29 +17,10 @@ public class AgifyController : ControllerBase
         {
             var response = await Client.GetAsync($"https://api.agify.io/?name={name}");
             response.EnsureSuccessStatusCode();
-            
-            var json = await response.Content.ReadAsStringAsync();
-            var result = System.Text.Json.JsonSerializer.Deserialize<AgifyAgeDto>(json);
-            
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { error = ex.Message });
-        }
-    }
 
-    [HttpGet("predict")]
-    public async Task<ActionResult<AgifyAgeDto>> PredictAge([FromQuery] string name)
-    {
-        try
-        {
-            var response = await Client.GetAsync($"https://api.agify.io/?name={name}");
-            response.EnsureSuccessStatusCode();
-            
             var json = await response.Content.ReadAsStringAsync();
             var result = System.Text.Json.JsonSerializer.Deserialize<AgifyAgeDto>(json);
-            
+
             return Ok(result);
         }
         catch (Exception ex)

@@ -8,68 +8,37 @@ namespace JwtAuth.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IJwtService _jwtService;
-    private readonly JwtSettings _jwtSettings;
 
-    public AuthController(IJwtService jwtService, JwtSettings jwtSettings)
+    public AuthController(IJwtService jwtService)
     {
         _jwtService = jwtService;
-        _jwtSettings = jwtSettings;
     }
 
     /// <summary>
-    /// Generate JWT token with username and custom expiry
+    /// Generate JWT token with custom username and expiry duration
     /// </summary>
-    /// <param name="request">Login request with username and password</param>
-    /// <returns>JWT token with expiry information</returns>
-    [HttpPost("login")]
-    public ActionResult<TokenResponse> Login([FromBody] LoginRequest request)
+    /// <param name="request">Request containing username and expiration minutes</param>
+    /// <returns>JWT token with custom expiry</returns>
+    [HttpPost("generate-token")]
+    public ActionResult<TokenResponse> GenerateToken([FromBody] GenerateTokenRequest request)
     {
-        // TODO: Validate credentials against your database/identity provider
-        // This is a simple example - replace with real authentication
-        if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+        if (string.IsNullOrEmpty(request.Username))
         {
-            return BadRequest(new { error = "Username and password are required" });
+            return BadRequest(new { error = "Username is required" });
         }
 
-        var token = _jwtService.GenerateToken(request.Username, _jwtSettings.ExpirationMinutes);
-        var expiresAt = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes);
+        if (request.ExpirationMinutes <= 0)
+        {
+            return BadRequest(new { error = "Expiration minutes must be greater than 0" });
+        }
+
+        var token = _jwtService.GenerateToken(request.Username, request.ExpirationMinutes);
+        var expiresAt = DateTime.UtcNow.AddMinutes(request.ExpirationMinutes);
 
         return Ok(new TokenResponse
         {
             Token = token,
             Username = request.Username,
-            ExpiresAt = expiresAt
-        });
-    }
-
-    /// <summary>
-    /// Generate JWT token with custom expiry duration
-    /// </summary>
-    /// <param name="username">Username for the token</param>
-    /// <param name="expirationMinutes">Custom expiration time in minutes</param>
-    /// <returns>JWT token with custom expiry</returns>
-    [HttpPost("generate-token")]
-    public ActionResult<TokenResponse> GenerateToken(
-        [FromQuery] string username,
-        [FromQuery] int expirationMinutes = 60)
-    {
-        if (string.IsNullOrEmpty(username))
-        {
-            return BadRequest(new { error = "Username is required" });
-        }
-
-        if (expirationMinutes <= 0)
-        {
-            return BadRequest(new { error = "Expiration minutes must be greater than 0" });
-        }
-
-        var token = _jwtService.GenerateToken(username, expirationMinutes);
-        var expiresAt = DateTime.UtcNow.AddMinutes(expirationMinutes);
-
-        return Ok(new TokenResponse
-        {
-            Token = token,
-            Username = username,
             ExpiresAt = expiresAt
         });
     }

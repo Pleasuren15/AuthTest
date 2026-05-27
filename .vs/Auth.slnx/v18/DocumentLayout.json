@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\Dev\\Learning\\AuthTest\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{22C1FD5B-D836-948B-0242-08F8B8C06135}|src\\ClaimsAuth\\ClaimsAuth.csproj|c:\\dev\\learning\\authtest\\src\\claimsauth\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{22C1FD5B-D836-948B-0242-08F8B8C06135}|src\\ClaimsAuth\\ClaimsAuth.csproj|solutionrelative:src\\claimsauth\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{22C1FD5B-D836-948B-0242-08F8B8C06135}|src\\ClaimsAuth\\ClaimsAuth.csproj|c:\\dev\\learning\\authtest\\src\\claimsauth\\controllers\\agifycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{22C1FD5B-D836-948B-0242-08F8B8C06135}|src\\ClaimsAuth\\ClaimsAuth.csproj|solutionrelative:src\\claimsauth\\controllers\\agifycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A87DC9FF-226E-2762-8B40-13467577FE70}|src\\Auth.AppHost\\Auth.AppHost.csproj|c:\\dev\\learning\\authtest\\src\\auth.apphost\\apphost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A87DC9FF-226E-2762-8B40-13467577FE70}|src\\Auth.AppHost\\Auth.AppHost.csproj|solutionrelative:src\\auth.apphost\\apphost.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{11EF4CD4-6D83-5990-4BF1-09581D37C261}|src\\JwtAuth\\JwtAuth.csproj|c:\\dev\\learning\\authtest\\src\\jwtauth\\controllers\\agifycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{11EF4CD4-6D83-5990-4BF1-09581D37C261}|src\\JwtAuth\\JwtAuth.csproj|solutionrelative:src\\jwtauth\\controllers\\agifycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,28 +30,29 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Dev\\Learning\\AuthTest\\src\\ClaimsAuth\\Program.cs",
-              "RelativeDocumentMoniker": "src\\ClaimsAuth\\Program.cs",
-              "ToolTip": "C:\\Dev\\Learning\\AuthTest\\src\\ClaimsAuth\\Program.cs",
-              "RelativeToolTip": "src\\ClaimsAuth\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAVAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "AgifyController.cs",
+              "DocumentMoniker": "C:\\Dev\\Learning\\AuthTest\\src\\JwtAuth\\Controllers\\AgifyController.cs",
+              "RelativeDocumentMoniker": "src\\JwtAuth\\Controllers\\AgifyController.cs",
+              "ToolTip": "C:\\Dev\\Learning\\AuthTest\\src\\JwtAuth\\Controllers\\AgifyController.cs",
+              "RelativeToolTip": "src\\JwtAuth\\Controllers\\AgifyController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-26T15:16:00.788Z",
+              "WhenOpened": "2026-05-27T05:49:40.18Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AppHost.cs",
-              "DocumentMoniker": "C:\\Dev\\Learning\\AuthTest\\src\\Auth.AppHost\\AppHost.cs",
-              "RelativeDocumentMoniker": "src\\Auth.AppHost\\AppHost.cs",
-              "ToolTip": "C:\\Dev\\Learning\\AuthTest\\src\\Auth.AppHost\\AppHost.cs",
-              "RelativeToolTip": "src\\Auth.AppHost\\AppHost.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "AgifyController.cs",
+              "DocumentMoniker": "C:\\Dev\\Learning\\AuthTest\\src\\ClaimsAuth\\Controllers\\AgifyController.cs",
+              "RelativeDocumentMoniker": "src\\ClaimsAuth\\Controllers\\AgifyController.cs",
+              "ToolTip": "C:\\Dev\\Learning\\AuthTest\\src\\ClaimsAuth\\Controllers\\AgifyController.cs",
+              "RelativeToolTip": "src\\ClaimsAuth\\Controllers\\AgifyController.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwBYAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-26T15:16:00.896Z"
+              "WhenOpened": "2026-05-27T05:49:35.15Z",
+              "EditorCaption": ""
             }
           ]
         }
