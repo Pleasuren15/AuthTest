@@ -9,6 +9,12 @@ public class AgifyController : ControllerBase
 {
     private static readonly HttpClient Client = new();
 
+    [HttpGet("health")]
+    public IActionResult Health()
+    {
+        return Ok(new { message = "Agify service is healthy" });
+    }
+
     [Authorize]
     [HttpGet("age/{name}")]
     public async Task<ActionResult<AgifyAgeDto>> GetAge(string name)
@@ -29,3 +35,4 @@ public class AgifyController : ControllerBase
         }
     }
 }
+

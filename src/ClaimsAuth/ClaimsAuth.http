@@ -1,6 +1,20 @@
-@ClaimsAuth_HostAddress = http://localhost:5011
-
-GET {{ClaimsAuth_HostAddress}}/weatherforecast/
-Accept: application/json
+@host = https://localhost:7131
 
 ###
+GET {{host}}/api/agify/health
+
+###
+GET {{host}}/api/agify/age/john
+Authorization: Bearer YOUR_TOKEN_HERE
+
+###
+GET {{host}}/api/agify/age/jane
+
+###
+GET {{host}}/api/agify/age/alice
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+
+###
+GET {{host}}/api/agify/age/alice
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiam9obmRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImV4cCI6MTc3OTkzNjQ3MCwiaXNzIjoiaHR0cHM6Ly9hdXRodGVzdC5sb2NhbCIsImF1ZCI6ImF1dGh0ZXN0LWFwaSJ9.IeGcKAD6KyvH_NqVtrSEkE5Yhfu-30a9hRsy6WvWPlE

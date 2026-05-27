@@ -1,6 +1,27 @@
-@JwtAuth_HostAddress = http://localhost:5200
+@host = https://localhost:7186
 
-GET {{JwtAuth_HostAddress}}/weatherforecast/
-Accept: application/json
+### 1. Generate JWT Token
+POST {{host}}/api/auth/generate-token
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "expirationMinutes": 1200
+}
 
 ###
+
+### 2. Health Check (no auth required)
+GET {{host}}/api/agify/health
+
+###
+
+### 3. Get Age with JWT (COPY TOKEN FROM RESPONSE #1)
+GET {{host}}/api/agify/age/janedoe
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiam9obmRvZSIsInVzZXJuYW1lIjoiam9obmRvZSIsImV4cCI6MTc3OTkzNjQ3MCwiaXNzIjoiaHR0cHM6Ly9hdXRodGVzdC5sb2NhbCIsImF1ZCI6ImF1dGh0ZXN0LWFwaSJ9.IeGcKAD6KyvH_NqVtrSEkE5Yhfu-30a9hRsy6WvWPlE
+
+###
+
+### 4. Get Age without JWT (should fail with 401)
+GET {{host}}/api/agify/age/jane
+

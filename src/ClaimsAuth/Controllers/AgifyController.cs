@@ -9,6 +9,12 @@ public class AgifyController : ControllerBase
 {
     private static readonly HttpClient Client = new();
 
+    [HttpGet("health")]
+    public IActionResult Health()
+    {
+        return Ok(new { message = "ClaimsAuth Agify service is healthy" });
+    }
+
     [HttpGet("age/{name}")]
     public async Task<ActionResult<AgifyAgeDto>> GetAge(string name)
     {
@@ -25,8 +31,11 @@ public class AgifyController : ControllerBase
             var jwtToken = handler.ReadJwtToken(token);
 
             var usernameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "username");
-            if (usernameClaim == null) { return BadRequest(new { error = "Token missing username claim" }); }
-            if (jwtToken.ValidTo < DateTime.UtcNow) { return Unauthorized(new { error = "Token has expired" }); }
+            if (usernameClaim == null)
+                return BadRequest(new { error = "Token missing username claim" });
+            
+            if (jwtToken.ValidTo < DateTime.UtcNow)
+                return Unauthorized(new { error = "Token has expired" });
 
             var response = await Client.GetAsync($"https://api.agify.io/?name={name}");
             response.EnsureSuccessStatusCode();
