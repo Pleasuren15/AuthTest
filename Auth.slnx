@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="src/Auth.AppHost/Auth.AppHost.csproj" />
+  <Project Path="src/ClaimsAuth/ClaimsAuth.csproj" />
+  <Project Path="src/JwtAuth/JwtAuth.csproj" />
+</Solution>
