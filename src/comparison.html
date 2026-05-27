@@ -4,309 +4,219 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authentication Comparison - JwtAuth vs ClaimsAuth</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            text-align: center;
-            color: white;
-            margin-bottom: 50px;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-header {
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 3px solid #667eea;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-header.jwt {
-            color: #667eea;
-        }
-
-        .card-header.claims {
-            color: #764ba2;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: bold;
-            margin-left: auto;
-        }
-
-        .badge-jwt {
-            background-color: #e3f2fd;
-            color: #667eea;
-        }
-
-        .badge-claims {
-            background-color: #f3e5f5;
-            color: #764ba2;
-        }
-
-        .features-list {
-            list-style: none;
-        }
-
-        .features-list li {
-            padding: 15px;
-            margin-bottom: 12px;
-            background-color: #f8f9fa;
-            border-left: 4px solid #667eea;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .card-header.claims ~ .features-list li {
-            border-left-color: #764ba2;
-        }
-
-        .features-list li:hover {
-            background-color: #e8edf7;
-            transform: translateX(5px);
-        }
-
-        .card-header.claims ~ .features-list li:hover {
-            background-color: #f0e8f7;
-        }
-
-        .features-list li:before {
-            content: "✓";
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            background-color: #667eea;
-            color: white;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 24px;
-            margin-right: 12px;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        .card-header.claims ~ .features-list li:before {
-            background-color: #764ba2;
-        }
-
-        .features-list li strong {
-            color: #333;
-            font-weight: 600;
-        }
-
-        .features-list li span {
-            color: #666;
-            font-size: 0.95em;
-        }
-
-        .comparison-section {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            margin-top: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .comparison-section h2 {
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 1.8em;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 15px;
-        }
-
-        .explanation {
-            background-color: #f8f9fa;
-            border-left: 4px solid #764ba2;
-            padding: 20px;
-            border-radius: 4px;
-            line-height: 1.8;
-            color: #555;
-            font-size: 0.95em;
-        }
-
-        .explanation strong {
-            color: #333;
-        }
-
-        .note-box {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #856404;
-        }
-
-        .note-box:before {
-            content: "⚠️ ";
-            margin-right: 8px;
-        }
-
-        @media (max-width: 768px) {
-            .comparison-grid {
-                grid-template-columns: 1fr;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        montserrat: ['Montserrat', 'sans-serif']
+                    },
+                    colors: {
+                        surface: '#f3f6fb',
+                        ink: '#0f172a'
+                    },
+                    boxShadow: {
+                        soft: '0 18px 45px -20px rgba(15, 23, 42, 0.45)'
+                    },
+                    keyframes: {
+                        rise: {
+                            '0%': { opacity: '0', transform: 'translateY(24px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    },
+                    animation: {
+                        rise: 'rise 700ms ease-out both'
+                    }
+                }
             }
-
-            h1 {
-                font-size: 1.8em;
-            }
-
-            .card-header {
-                font-size: 1.4em;
-            }
-        }
-    </style>
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
-    <div class="container">
-        <h1>🔐 Authentication Comparison</h1>
-
-        <div class="comparison-grid">
-            <!-- JwtAuth Card -->
-            <div class="card">
-                <div class="card-header jwt">
-                    JwtAuth
-                    <span class="badge badge-jwt">Strict Validation</span>
-                </div>
-                <ul class="features-list">
-                    <li>
-                        <strong>JWT Bearer Middleware</strong>
-                        <span>Validates token automatically on every request</span>
-                    </li>
-                    <li>
-                        <strong>[Authorize] Attribute</strong>
-                        <span>Declarative protection at the controller/action level</span>
-                    </li>
-                    <li>
-                        <strong>Signature Validation</strong>
-                        <span>Framework verifies token hasn't been tampered with</span>
-                    </li>
-                    <li>
-                        <strong>Expiration Check</strong>
-                        <span>Automatically rejects expired tokens</span>
-                    </li>
-                    <li>
-                        <strong>Issuer Validation</strong>
-                        <span>Verifies token was issued by trusted source</span>
-                    </li>
-                    <li>
-                        <strong>Audience Validation</strong>
-                        <span>Ensures token is intended for this API</span>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- ClaimsAuth Card -->
-            <div class="card">
-                <div class="card-header claims">
-                    ClaimsAuth
-                    <span class="badge badge-claims">Manual Validation</span>
-                </div>
-                <ul class="features-list">
-                    <li>
-                        <strong>Manual Header Extraction</strong>
-                        <span>Manually extracts JWT from Authorization header</span>
-                    </li>
-                    <li>
-                        <strong>No Middleware Protection</strong>
-                        <span>Validation happens inside controller logic</span>
-                    </li>
-                    <li>
-                        <strong>Token Decoding</strong>
-                        <span>Decodes token without validating signature (for demo)</span>
-                    </li>
-                    <li>
-                        <strong>Username Claim Extraction</strong>
-                        <span>Manually checks for username claim in token</span>
-                    </li>
-                    <li>
-                        <strong>Manual Expiration Check</strong>
-                        <span>Manually verifies token hasn't expired</span>
-                    </li>
-                    <li>
-                        <strong>Custom Business Logic</strong>
-                        <span>Full control over validation rules per endpoint</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="comparison-section">
-            <h2>Why [Authorize] Wouldn't Work in ClaimsAuth</h2>
-            <div class="explanation">
-                <p>
-                    <strong>In ClaimsAuth, the [Authorize] attribute would serve no practical purpose</strong> 
-                    because it requires ASP.NET Core's authentication middleware to be configured. 
-                </p>
-                <p style="margin-top: 15px;">
-                    The <strong>[Authorize]</strong> attribute is part of the authorization pipeline that:
-                </p>
-                <ul style="margin-left: 20px; margin-top: 10px;">
-                    <li>✓ Intercepts requests before they reach your controller</li>
-                    <li>✓ Checks if a user is authenticated (User.Identity.IsAuthenticated)</li>
-                    <li>✓ Checks if the user has required roles/policies</li>
-                    <li>✓ Returns 401 Unauthorized if validation fails</li>
-                </ul>
-                <p style="margin-top: 15px;">
-                    Since <strong>ClaimsAuth doesn't configure JWT Bearer middleware</strong>, 
-                    ASP.NET Core has no way to populate the User object with claims. Therefore, 
-                    the [Authorize] attribute would be ignored, and every request would pass through 
-                    (your manual validation in the controller is what actually enforces security).
-                </p>
-            </div>
-            <div class="note-box">
-                This demonstrates two real-world patterns: JwtAuth shows best practices with 
-                framework-level security, while ClaimsAuth shows how to manually handle claims 
-                for cases requiring custom validation logic.
-            </div>
-        </div>
+<body class="font-montserrat min-h-screen bg-gradient-to-br from-[#f7f2e8] via-[#eef5ff] to-[#e8f7ef] text-ink">
+    <div aria-hidden="true" class="pointer-events-none fixed inset-0 overflow-hidden">
+        <div class="absolute -top-24 -left-16 h-80 w-80 rounded-full bg-orange-300/30 blur-3xl"></div>
+        <div class="absolute top-1/3 -right-20 h-96 w-96 rounded-full bg-cyan-300/25 blur-3xl"></div>
+        <div class="absolute -bottom-24 left-1/3 h-80 w-80 rounded-full bg-emerald-300/25 blur-3xl"></div>
     </div>
+
+    <main class="relative mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <header class="mx-auto mb-6 max-w-3xl text-center animate-rise">
+            <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-slate-300/70 bg-white/70 px-3 py-1.5 text-xs font-semibold text-slate-700 backdrop-blur sm:text-sm">
+                <i data-lucide="scan-face" class="h-3.5 w-3.5 text-orange-500 sm:h-4 sm:w-4"></i>
+                API Security Deep Dive
+            </div>
+            <h1 class="text-balance text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Authentication Comparison</h1>
+            <p class="mt-3 text-pretty text-sm leading-relaxed text-slate-600 sm:text-base">
+                JwtAuth and ClaimsAuth solve similar goals with very different trust boundaries. This side-by-side view highlights where framework-level guarantees outpace custom controller logic.
+            </p>
+        </header>
+
+        <section class="grid gap-4 lg:grid-cols-2">
+            <article class="group rounded-2xl border border-sky-200/80 bg-white/85 p-4 shadow-soft backdrop-blur transition duration-300 hover:-translate-y-1 hover:shadow-2xl animate-rise sm:p-5" style="animation-delay: 80ms;">
+                <div class="mb-4 flex flex-wrap items-center gap-2.5 border-b border-sky-100 pb-3">
+                    <div class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
+                        <i data-lucide="shield-check" class="h-5 w-5"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-sky-900">JwtAuth</h2>
+                    <span class="ml-auto rounded-full bg-sky-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-sky-700 sm:text-xs">Strict Validation</span>
+                </div>
+
+                <ul class="space-y-2.5">
+                    <li class="flex gap-2.5 rounded-xl border border-sky-100 bg-sky-50/60 p-3 transition group-hover:border-sky-200">
+                        <i data-lucide="workflow" class="mt-0.5 h-4 w-4 shrink-0 text-sky-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">JWT Bearer Middleware</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Validates token automatically on every request.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-sky-100 bg-sky-50/60 p-3 transition group-hover:border-sky-200">
+                        <i data-lucide="lock-keyhole" class="mt-0.5 h-4 w-4 shrink-0 text-sky-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">[Authorize] Attribute</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Declarative protection at the controller or action level.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-sky-100 bg-sky-50/60 p-3 transition group-hover:border-sky-200">
+                        <i data-lucide="fingerprint" class="mt-0.5 h-4 w-4 shrink-0 text-sky-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Signature Validation</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Framework confirms token integrity before access is granted.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-sky-100 bg-sky-50/60 p-3 transition group-hover:border-sky-200">
+                        <i data-lucide="timer" class="mt-0.5 h-4 w-4 shrink-0 text-sky-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Expiration Check</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Expired tokens are blocked automatically by pipeline rules.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-sky-100 bg-sky-50/60 p-3 transition group-hover:border-sky-200">
+                        <i data-lucide="building-2" class="mt-0.5 h-4 w-4 shrink-0 text-sky-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Issuer Validation</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Accepts only tokens minted by trusted authorities.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-sky-100 bg-sky-50/60 p-3 transition group-hover:border-sky-200">
+                        <i data-lucide="target" class="mt-0.5 h-4 w-4 shrink-0 text-sky-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Audience Validation</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Ensures each token is actually meant for this API.</p>
+                        </div>
+                    </li>
+                </ul>
+            </article>
+
+            <article class="group rounded-2xl border border-emerald-200/80 bg-white/85 p-4 shadow-soft backdrop-blur transition duration-300 hover:-translate-y-1 hover:shadow-2xl animate-rise sm:p-5" style="animation-delay: 160ms;">
+                <div class="mb-4 flex flex-wrap items-center gap-2.5 border-b border-emerald-100 pb-3">
+                    <div class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+                        <i data-lucide="wrench" class="h-5 w-5"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-emerald-900">ClaimsAuth</h2>
+                    <span class="ml-auto rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-700 sm:text-xs">Manual Validation</span>
+                </div>
+
+                <ul class="space-y-2.5">
+                    <li class="flex gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3 transition group-hover:border-emerald-200">
+                        <i data-lucide="file-search" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Manual Header Extraction</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Controller logic reads the Authorization header directly.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3 transition group-hover:border-emerald-200">
+                        <i data-lucide="shield-off" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">No Middleware Protection</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Validation runs only if custom endpoint code executes.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3 transition group-hover:border-emerald-200">
+                        <i data-lucide="binary" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Token Decoding</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Parses token payload without full cryptographic guarantees.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3 transition group-hover:border-emerald-200">
+                        <i data-lucide="user-search" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Username Claim Extraction</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Custom code checks for expected user identity claims.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3 transition group-hover:border-emerald-200">
+                        <i data-lucide="clock-alert" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Manual Expiration Check</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Endpoint code must explicitly reject stale or old tokens.</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-2.5 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3 transition group-hover:border-emerald-200">
+                        <i data-lucide="cpu" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-700"></i>
+                        <div>
+                            <p class="text-sm font-semibold text-slate-900">Custom Business Logic</p>
+                            <p class="text-xs text-slate-600 sm:text-sm">Offers granular control where endpoint-specific rules matter.</p>
+                        </div>
+                    </li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="mt-5 rounded-2xl border border-amber-200/80 bg-white/85 p-4 shadow-soft backdrop-blur sm:p-5 animate-rise" style="animation-delay: 240ms;">
+            <h3 class="mb-3 flex items-center gap-2.5 text-xl font-bold text-amber-900 sm:text-2xl">
+                <span class="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-amber-100 text-amber-700 sm:h-9 sm:w-9">
+                    <i data-lucide="badge-info" class="h-4 w-4 sm:h-5 sm:w-5"></i>
+                </span>
+                Why [Authorize] Wouldn't Work in ClaimsAuth
+            </h3>
+
+            <div class="space-y-3 text-xs leading-6 text-slate-700 sm:text-sm">
+                <p>
+                    <strong class="text-slate-900">In ClaimsAuth, the [Authorize] attribute has no real effect</strong> because it depends on ASP.NET Core authentication middleware being configured first.
+                </p>
+                <p>
+                    The <strong class="text-slate-900">[Authorize]</strong> attribute expects the framework pipeline to authenticate users before your controller runs.
+                </p>
+                <ul class="grid gap-2 text-slate-700 sm:grid-cols-2">
+                    <li class="flex items-center gap-1.5 rounded-lg bg-amber-50 px-2.5 py-1.5">
+                        <i data-lucide="check-check" class="h-3.5 w-3.5 text-amber-700"></i>
+                        Intercepts requests before controller code
+                    </li>
+                    <li class="flex items-center gap-1.5 rounded-lg bg-amber-50 px-2.5 py-1.5">
+                        <i data-lucide="check-check" class="h-3.5 w-3.5 text-amber-700"></i>
+                        Verifies authentication state automatically
+                    </li>
+                    <li class="flex items-center gap-1.5 rounded-lg bg-amber-50 px-2.5 py-1.5">
+                        <i data-lucide="check-check" class="h-3.5 w-3.5 text-amber-700"></i>
+                        Enforces roles and policies centrally
+                    </li>
+                    <li class="flex items-center gap-1.5 rounded-lg bg-amber-50 px-2.5 py-1.5">
+                        <i data-lucide="check-check" class="h-3.5 w-3.5 text-amber-700"></i>
+                        Returns 401 automatically on failure
+                    </li>
+                </ul>
+                <p>
+                    Since <strong class="text-slate-900">ClaimsAuth skips JWT Bearer middleware</strong>, the framework never hydrates user claims in the standard pipeline. Security therefore relies on manual checks inside each endpoint.
+                </p>
+            </div>
+
+            <aside class="mt-4 rounded-xl border border-amber-300 bg-amber-100/60 px-3 py-2 text-xs text-amber-900 sm:text-sm">
+                <p class="flex items-start gap-1.5">
+                    <i data-lucide="triangle-alert" class="mt-0.5 h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4"></i>
+                    JwtAuth represents production best-practice defaults; ClaimsAuth is better suited for niche scenarios requiring full custom claim logic.
+                </p>
+            </aside>
+        </section>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
